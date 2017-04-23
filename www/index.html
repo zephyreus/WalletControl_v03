@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" charset="utf-8" name="viewport" />
+		<link href="css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<script src="cordova.js"></script>
+		<script src="js/jquery-2.1.4.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.min.js"></script>
+		<script src="js/wallet_control.js"></script>
+		<title>Wallet Control</title>
+	</head>
+
+	<body onload="setMoney()">
+		<!-- Main page, will not contain header because app title name -->
+		<div data-role="page" id="mainPage">
+			<!-- Settings -->
+			<div data-role="panel" id="settings">
+				<h2>Settings</h2>
+				<div data-role="fieldcontain">
+					<p>Balance:</p>
+					<input onchange="saveSetting();" type="number" name="name" id="balance" value="" />
+				</div>
+				<div data-role="fieldcontain">
+					<p>Default currency: PLN</p>
+				</div>
+				<div data-role="fieldcontain">
+					<p>The amount of one expense:</p>
+					<input onchange="saveSetting(); setMoney();" type="number" name="name" id="expense" value="" />
+				</div>
+				<a href="#mainPage" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-back ui-btn-icon-left">Back</a>
+			</div>
+
+			<div data-role="main" class="ui-content">
+			<h1>Wallet Control</h1>
+					<a href="#shopping" class="ui-btn ui-btn-inline ui-corner-all ui-shadow menu-button" onclick="checkSettings();">Start shopping</a>
+					<a onclick="setSettings()" href="#settings" class="ui-btn ui-btn-inline ui-corner-all ui-shadow menu-button">Settings</a>
+					<a href="#about" class="ui-btn ui-btn-inline ui-corner-all ui-shadow menu-button">About app</a>
+			</div>
+		</div>
+
+		<!--Selection panel -->
+		<div data-role="page" id="shopping">
+			<div data-role="header">
+
+			</div>
+
+			<div data-role="main" class="ui-content">
+				<a id="addExpense" onclick="setMoney()" href="#defaultAmount" class="ui-btn ui-btn-inline ui-corner-all ui-shadow menu-button">Add expense</a>
+				<a href="#maxAmount" class="ui-btn ui-btn-inline ui-corner-all ui-shadow menu-button">Enter max amount</a>
+			</div>
+			<a href="#mainPage" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-back ui-btn-icon-left">Back</a>
+			<div data-role="footer">
+				Created by Wiktor Kozak and Przemek Koprowski
+			</div>
+		</div>
+			<!--Amount -->
+			<div data-role="page" id="defaultAmount">
+				<div data-role="header">
+					<div data-role="panel" data-position="top" id="listOfExpenses">					
+						<div id="listExpenses">
+
+						</div>
+						<a href="#defaultAmount" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-back ui-btn-icon-left">Close list</a>
+					</div>	               
+				</div>
+
+				<div data-role="main" class="ui-content">
+					<h4 id="money" style="margin-left:5%; margin-right:5%;">Money Left:</h4>
+					<div style="float:left; width:90%; margin-left:5%; margin-right:5%;">
+						<input type="text" name="moneysLeft" id="moneysLeft" value="" style="margin-left:5%; margin-right:5%;" readonly />
+					</div>
+					<h4 style="margin-left:5%; margin-right:5%;">Expense:</h4>
+					<div style="height: 125px;">
+						<div style="float:left; width:60%; margin-left:5%;">
+							<input type="text" name="lastExpenses" id="lastExpenses" value="" style="text-align:right; color: black; height: 40px;" value="" readonly>
+						</div>
+						<div style="float:left; width:30%; margin-right:5%;">
+							<select id="currency" name="select-native-1" style="height:40px; width: 90%; margin-left:5%; margin-right:5%;">
+								<option style="color: grey" value="">Choose currency</option>
+								<option value="PLN">PLN</option>
+								<option value="EUR">EUR</option>
+								<option value="USD">USD</option>
+								<option value="AUD">AUD</option>
+								<option value="GBP">GBP</option>
+								<option value="CZK">CZK</option>
+								<option value="HUF">HUF</option>
+								<option value="CHF">CHF</option>
+								<option value="CAD">CAD</option>
+								<option value="JPY">DKK</option>
+								<option value="NOK">NOK</option>
+								<option value="DKK">DKK</option>
+								<option value="SEK">SEK</option>
+							</select>
+						</div>
+						<div style="height: 65px; width: 90%; margin-left:5%; margin-right:5%;">
+							<select id="typeSelect" name="select-native-1" style="height:40px; width: 90%; margin-left:5%; margin-right:5%;">
+								<option value="food">Food</option>
+								<option value="clothes">Clothes</option>
+								<option value="rent">Rent</option>
+								<option value="bills">Bills</option>
+								<option value="tabacco">Tabacco</option>
+								<option value="alcohol">Alcohol</option>
+								<option value="entertaiment">Entertaiment</option>
+								<option value="car">Car</option>
+								<option selected="selected" value="othere">Other</option>
+							</select>
+						</div>
+					</div>
+					<div id="keyboard">
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left; margin-left: 5%;" onclick='setNumber(this)'>9</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left;" onclick='setNumber(this)'>8</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left;" onclick='setNumber(this)'>7</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left; margin-left: 5%;" onclick='setNumber(this)'>6</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left;" onclick='setNumber(this)'>5</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left;" onclick='setNumber(this)'>4</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left; margin-left: 5%;" onclick='setNumber(this)'>3</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left;" onclick='setNumber(this)'>2</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left;" onclick='setNumber(this)'>1</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left; margin-left: 5%;" onclick='buttonSpecialSign(this)'>,</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left;" onclick='setNumber(this)'>0</button>
+						<button type="button" class="btn btn-default btn-sm" style="width: 30%; float: left; margin-right: 5%;" onclick='buttonSpecialSign(this)'>X</button>
+						<button type="button" class="btn btn-default btn-sm color-button" style="width: 45%; float: left; background-color: #a8ed64;margin-left: 5%;" onclick="addToArray();">ADD</button>
+						<button type="button" class="btn btn-default btn-sm color-button" style="width: 45%; float: left; background-color: #eda864; margin-top: 8px;" onclick="removeSign();">REMOVE</button>
+						<button id="finish_shopping" type="button" class="btn btn-primary btn-sm btn-lg color-button" style="width: 90%; margin-left: 5%; margin-right: 5%; background-color: #64ed64;" onclick="insertExpensesToDatabase();">FINISH</button>
+						<button id="cancel_shopping" type="button" class="btn btn-primary btn-sm btn-lg color-button" style="width: 90%; margin-left: 5%; margin-right: 5%; background-color: #ed6464;">CANCEL</button>
+						<a id="hdShopping" href="#shopping" style="visibility:hidden"></a>
+					</div>
+					<a href="#listOfExpenses" class="ui-btn ui-btn-inline ui-corner-all ui-shadow menu-button">Show expenses</a>
+				</div>
+				<div data-role="footer">
+					Created by Wiktor Kozak and Przemek Koprowski
+				</div>
+			</div>
+
+			<div data-role="page" id="maxAmount">
+				<div data-role="header">
+				</div>
+				<div data-role="main" class="ui-content">
+					<h2>Set amount</h2>
+					<input name="name" id="setExpense" value="" type="number" />
+					<a href="#defaultAmount" class="ui-btn ui-btn-inline ui-corner-all ui-shadow" onclick="setFromAmount()">Confirm</a>
+					<a id="hdmaxAmount" href="#maxAmount" type="button" style="visibility:hidden"></a>
+				</div>
+				<div id="footer" data-role="footer">
+					Created by Wiktor Kozak and Przemek Koprowski
+				</div>
+			</div>
+			<!-- About page -->
+			<div data-role="page" id="about">
+				<div data-role="header">
+				</div>
+				<div data-role="main" class="ui-content">
+					<h3>Start shopping:</h3>
+					<p>
+						Here You can start using main functionality of application. Application delivers two way of setting maximum amount of expenses:<br>
+						> when user click "Add expense" - app uses default amount configured in application settings<br>
+						> when user click "Enter max amount" - user can manually enter maximum amount for given shopping<br>
+					</p>
+					<h3>Settings</h3>
+					<p>
+						Here user can set following default values:<br>
+						> Balance - amount of value of wallet for given month<br>
+						> Default currency - currency which is defalut choosen on add expenses screen<br>
+						> The amount of one expense - maximum amount of one shopping<br>
+					</p>
+					<h3>Expenses screen</h3>
+					<p>
+						This screen contain following elements:<br>
+						> Moneys left - amount of moneys left in your wallet for given shopping<br>
+						> Expense - here will appear entered price<br>
+						> Choose currency - list with available currencies for given product<br>
+						> Cathegory of expense - "Other" is selected as default<br>
+						> Keyboard with numbers - using "," user can insert float prices and using "X" user can mulitple price<br>
+						> ADD - adding entered price to list<br>
+						> REMOVE - removes last entered sign<br>
+						> FINISH - saves your expenses and returning to main menu<br>
+						> CANCEL - returning to main menu without saving your expenses<br>
+						> Show expenses - displays list of last added expenses<br>
+					</p>
+					<a href="#mainPage" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-back ui-btn-icon-left">Back</a>
+				</div>
+				<div id="footer" data-role="footer">
+					Created by Wiktor Kozak and Przemek Koprowski
+				</div>
+			</div>
+	</body>
+
+</html>
